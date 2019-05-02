@@ -1,0 +1,29 @@
+<template>
+    <div class="container">
+        <div class="card mb-2">
+            <img class="card-img-top" :src="news.image" alt="Card image cap" style="width: 100%;height: 400px">
+            <div class="card-body bg-info" >
+                <h5 class="card-title">{{news.title}}</h5>
+                <p class="card-text">{{news.content}}</p>
+                <p class="card-text"><small class="text-dark">{{news.published_data}}</small></p>
+            </div>
+        </div>
+
+    </div>
+</template>
+
+<script>
+    export default {
+        name: "NewsView",
+        computed:{
+            news(){
+                return this.$route.query.news
+            }
+        }
+
+    }
+</script>
+
+<style scoped>
+
+</style>
