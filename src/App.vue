@@ -5,7 +5,7 @@
         <div class="border m-2"  v-if="authUser">
             <nav class="my-2 my-md-0 mr-md-3  bg-light text-warning" >
                 <router-link class="p-2 text-dark" to="/">
-                    <img :src="authUser.image" style="height: 50px;height:50px">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrkZnWIcM5SWiw59Vh5tdKzHNCtbVcTiLc2v6YNtXY52jTIb--A" style="height: 50px;height:50px">
                 </router-link>
                 <router-link class="p-2 text-dark" to="/">
                     {{authUser.name}} {{authUser.surname}}

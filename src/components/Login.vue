@@ -23,6 +23,7 @@
 
 <script>
     import {required, email} from 'vuelidate/lib/validators'
+    import axios from 'axios'
     export default {
         name: "Login",
         data() {
@@ -80,16 +81,17 @@
         },
         methods: {
             login() {
-                this.userData.map((user) => {
-                    if (user.email === this.email && user.password === this.password) {
-                        this.$router.push('/profile');
-                        this.$store.commit('userChange',user);
-
-                    }
-                    else{
-                        //
-                    }
+                let url = 'http://127.0.0.1:8000/api/login';
+                let data = {
+                    email:this.email,
+                    password:this.password
+                };
+                axios.post(url,data).then(response => {
+                    console.log(response.data);
+                    this.$router.push('/profile');
+                    this.$store.commit('userAuth',response.data);
                 })
+
             }
         }
 
