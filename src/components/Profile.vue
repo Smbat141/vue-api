@@ -1,12 +1,18 @@
 <template>
     <div>
-        <h1>My profile Page</h1>
+        <h1>Hello {{user.name}}</h1>
     </div>
 </template>
 
 <script>
     export default {
-        name: "Profile"
+        name: "Profile",
+        computed:{
+            user(){
+               return this.$store.state.auth.user;
+            }
+        },
+
     }
 </script>
 

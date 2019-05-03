@@ -9,7 +9,11 @@ Vue.use(VueRouter);
 Vue.use(Vuelidate);
 
 new Vue({
-  render: h => h(App),
-  router,
-  store,
-}).$mount('#app')
+    store,
+    render: h => h(App),
+    router,
+    created() {
+        let user = localStorage.getItem('user');
+        if (user) this.$store.commit('auth', JSON.parse(user));
+    }
+}).$mount('#app');

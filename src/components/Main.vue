@@ -1,6 +1,8 @@
 <template>
     <div >
         <div >
+<!--            {{userLocal.id}}-->
+            {{user}}
             <div class="album py-5 bg-light" >
                 <div class="container">
                     <div class="row" >
@@ -63,7 +65,17 @@
         },
         components:{
             appNews:News
+        },
+        computed:{
+            userLocal(){
+                return JSON.parse(localStorage.getItem('user'))
+            },
+            user(){
+                return this.$store.state.user
+            }
+
         }
+
     }
 </script>
 

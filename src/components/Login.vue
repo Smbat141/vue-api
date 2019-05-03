@@ -81,19 +81,25 @@
         },
         methods: {
             login() {
-                let url = 'http://127.0.0.1:8000/api/login';
+                let url = 'http://newsblog.test/api/login';
                 let data = {
                     email:this.email,
                     password:this.password
                 };
                 axios.post(url,data).then(response => {
-                    console.log(response.data);
-                    this.$router.push('/profile');
-                    this.$store.commit('userAuth',response.data);
-                })
+                    if (response.status === 200) {
+                        localStorage.setItem('user', JSON.stringify(response.data))
 
+                        this.$store.commit('auth', response.data);
+
+                        this.$router.push('/profile');
+
+                    }
+                })
             }
-        }
+        },
+
+
 
     }
 </script>
