@@ -3,17 +3,19 @@
         <form class="form-signin" @submit.prevent>
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
             <label for="inputEmail" class="sr-only">Email address</label>
-            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus
+            <input type="email" v-validate="'email'" id="inputEmail" name="email" class="form-control" placeholder="Email address" required autofocus
                    v-model="email">
+            <span class="text-danger" v-show="errors.has('email')">{{errors.first('email')}}</span>
             <label for="inputPassword" class="sr-only">Password</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required
+            <input type="password" v-validate="'min:8'" name="password" id="inputPassword" class="form-control" placeholder="Password" required
                    v-model="password">
+            <span class="text-danger" v-show="errors.has('password')">{{errors.first('password')}}</span>
             <div class="checkbox mb-3">
                 <label>
                     <input type="checkbox" value="remember-me"> Remember me
                 </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit" @click="login">Sign in</button>
+            <button class="btn btn-lg btn-primary btn-block" type="submit" :disabled="errors.any()" @click="login">Sign in</button>
             <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
         </form>
         {{email}}
@@ -22,7 +24,6 @@
 </template>
 
 <script>
-    import {required, email} from 'vuelidate/lib/validators'
     import axios from 'axios'
     export default {
         name: "Login",
@@ -30,58 +31,11 @@
             return {
                 email: '',
                 password: '',
-                userData: [
-                    {
-                        name: 'John',
-                        surname: 'Fernandez',
-                        email: 'user1@gmail.com',
-                        password:'secret',
-                        status: 'block', //active or block
-                        activity: 'offline', //online or offline
-                        last_visit: '2019-04-29',
-                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrkZnWIcM5SWiw59Vh5tdKzHNCtbVcTiLc2v6YNtXY52jTIb--A',
-                        role_id: 1, //1:user,2:admin,3:manager
-                        user_id:1,
-                    },
-                    {
-                        name: 'Michael',
-                        surname: 'Jordan',
-                        email: 'user2@gmail.com',
-                        password:'secret',
-                        status: 'block', //active or block
-                        activity: 'online', //online or offline
-                        last_visit: '2019-04-29',
-                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrkZnWIcM5SWiw59Vh5tdKzHNCtbVcTiLc2v6YNtXY52jTIb--A',
-                        role_id: 1, //1:user,2:admin,3:manager
-                        user_id:2,
-                    },
-                    {
-                        name: 'Morgan',
-                        surname: 'Freeman',
-                        email: 'user3@gmail.com',
-                        password:'secret',
-                        status: 'block', //active or block
-                        activity: 'online', //online or offline
-                        last_visit: '2019-04-29',
-                        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWrkZnWIcM5SWiw59Vh5tdKzHNCtbVcTiLc2v6YNtXY52jTIb--A',
-                        role_id: 1, //1:user,2:admin,3:manager
-                        user_id:3,
-                    }
-                ],
-            }
-        },
-        validations: {
-            email: {
-                email,
-                required
-            },
-            password: {
-                required
             }
         },
         methods: {
             login() {
-                let url = 'http://newsblog.test/api/login';
+                let url = 'http://127.0.0.1:8000/api/login';
                 let data = {
                     email:this.email,
                     password:this.password
@@ -98,9 +52,12 @@
                 })
             }
         },
+        computed: {
+            isComplete () {
+                return this.email && this.password
+            }
 
-
-
+    }
     }
 </script>
 
