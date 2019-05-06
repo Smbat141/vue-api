@@ -2,6 +2,7 @@
     <div class="app ">
         <app-navbar></app-navbar>
         <router-view style="width: 100%;min-height:300px;"></router-view>
+
         <app-footer></app-footer>
     </div>
 </template>

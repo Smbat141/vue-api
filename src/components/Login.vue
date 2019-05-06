@@ -35,7 +35,7 @@
         },
         methods: {
             login() {
-                let url = 'http://127.0.0.1:8000/api/login';
+               let url = 'http://127.0.0.1:8000/api/login';
                 let data = {
                     email:this.email,
                     password:this.password
