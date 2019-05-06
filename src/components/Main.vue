@@ -116,8 +116,6 @@
                     this.newsData = response.data.data
                 })
             }
-
-
         }
 
     }
