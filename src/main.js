@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import router from './routes';
 import store from './store/index'
 import VeeValidate from 'vee-validate';
+import axios from "axios";
 
 Vue.use(VeeValidate);
 Vue.use(VueRouter);
@@ -15,5 +16,12 @@ new Vue({
     created() {
         let user = localStorage.getItem('user');
         if (user) this.$store.commit('auth', JSON.parse(user));
+        axios.get('http://127.0.0.1:8000/api/newses').then(response => {
+            /*this.page = response.data.meta.current_page
+            this.last_page = response.data.meta.last_page
+            this.$store.commit('news',response.data.data)*/
+            this.$store.commit('news',response.data)
+
+        })
     }
 }).$mount('#app');

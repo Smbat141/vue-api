@@ -9,7 +9,7 @@
                 <p class="card-text font-weight-bold">{{news.content.substring(0,100)+".." }}</p>
                 <div class="d-flex justify-content-between align-items-center ">
                     <div class="btn-group">
-                        <router-link :to="{name:'newsView',params:{id:news.id},query:{news:news}}"
+                        <router-link :to="{name:'newsView',params:{id:news.id}}"
                                      class="btn btn-outline-primary text-dark">View
                         </router-link>
                         <button type="button" class="btn btn-sm btn-outline-primary text-dark">Edit</button>

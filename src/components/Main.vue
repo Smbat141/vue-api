@@ -8,9 +8,9 @@
                     </div>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item" @click="previus"><button class="page-link">Previous</button></li>
-                            <li class="page-item" v-for="pages in last_page" @click="thisPage(pages)"><button class="page-link" >{{pages}}</button></li>
-                            <li class="page-item" @click="next"><button class="page-link" >Next</button></li>
+                            <li class="page-item" ><button class="page-link" @click="previus">Previous</button></li>
+                            <li class="page-item" v-for="pages in lastPage" @click="thisPage(pages)"><button class="page-link" >{{pages}}</button></li>
+                            <li class="page-item" ><button class="page-link" @click="next">Next</button></li>
                         </ul>
                     </nav>
                 </div>
@@ -22,51 +22,44 @@
 </template>
 
 <script>
-    import News from "./News";
     import axios from "axios";
+
+    import News from "./News";
     export default {
         name: "Main",
         data(){
             return {
-                page:'',
-                last_page:''
+                newsData:this.$store.getters.getNews.news,
+                page:this.$store.getters.getNews.page,
+                lastPage:this.$store.getters.getNews.lastPage,
             }
         },
         components:{
             appNews:News
         },
-        computed:{
-            newsData(){
-                return this.$store.getters.news
-            },
-        },
-        created() {
-            axios.get('http://127.0.0.1:8000/api/newses').then(response => {
-                this.page = response.data.meta.current_page
-                this.last_page = response.data.meta.last_page
-                this.$store.commit('news',response.data.data)
-            })
-        },
         methods:{
             next(){
-                if(this.page < this.last_page){
-                    this.page++,
-                        axios.get('http://127.0.0.1:8000/api/newses?page='+this.page).then(response => {
-                            this.newsData = response.data.data
-                        })
+                if(this.page < this.lastPage) {
+                    this.page++;
+                    axios.get('http://127.0.0.1:8000/api/newses?page=' + this.page).then(response => {
+                        this.newsData = response.data.data
+                    })
                 }
             },
+
             previus(){
                 if(this.page > 1){
-                    this.page--,
-                        axios.get('http://127.0.0.1:8000/api/newses?page='+this.page).then(response => {
+                    this.page--;
+                        axios.get('http://127.0.0.1:8000/api/newses?page='+ this.page).then(response => {
                             this.newsData = response.data.data
                         })
                 }
             },
             thisPage(page){
                 axios.get('http://127.0.0.1:8000/api/newses?page='+ page).then(response => {
-                    this.newsData = response.data.data
+                    console.log(response.data.meta.current_page);
+                    this.page = response.data.meta.current_page
+                   this.newsData = response.data.data
                 })
             }
         },

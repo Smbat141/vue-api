@@ -26,17 +26,25 @@ export default new Vuex.Store({
         token(state){
             return 'Bearer ' +  state.auth.user.api_token
         },
-        news(state){
-            return  state.news
+        getNews(state){
+            console.log(state.news.meta.last_page);
+
+            return  {
+                news:state.news.data,
+                page:state.news.meta.current_page,
+                lastPage:state.news.meta.last_page
+            }
         },
+
         newsWhere:state => id =>{
+            // console.log(state.news);
+
             state.news.filter(n => {
                 if(n.id === id){
                     return state.news
                 }
             })
 
-            console.log(123);
             return state.news
         }
     }
