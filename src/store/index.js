@@ -7,9 +7,13 @@ export default new Vuex.Store({
         auth: {
             check: false,
             user: {},
-        }
+        },
+        news:[],
     },
     mutations:{
+        news(state,news){
+            state.news = news
+        },
         auth(state, user){
             state.auth.user = user;
             state.auth.check = true;
@@ -19,6 +23,22 @@ export default new Vuex.Store({
         }
     },
     getters:{
+        token(state){
+            return 'Bearer ' +  state.auth.user.api_token
+        },
+        news(state){
+            return  state.news
+        },
+        newsWhere:state => id =>{
+            state.news.filter(n => {
+                if(n.id === id){
+                    return state.news
+                }
+            })
+
+            console.log(123);
+            return state.news
+        }
     }
 
 })

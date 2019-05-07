@@ -17,9 +17,9 @@
         name: "NewsView",
         computed:{
             news(){
-                return this.$route.query.news
-            }
-        }
+                return  this.$store.getters.newsWhere(this.$route.params.id)
+            },
+        },
 
     }
 </script>

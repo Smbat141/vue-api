@@ -28,75 +28,30 @@
         name: "Main",
         data(){
             return {
-                newsData:[],
                 page:'',
                 last_page:''
-               /* newsData: [
-                    {
-                        id:1,
-                        title: 'News 1',
-                        content: 'This is a wider card with supporting text below as a naturallead-in to ' +
-                            'additional content. This content is a little bit longer',
-                        short_content: 'His short content is a little bit longer',
-                        published_data: '2019-4-29',
-                        status: 'active', // or block
-                        image: 'http://www.elsetge.cat/imagepost/b/0/2025_free-wallpaper-images.jpg',
-                        user_id: 1,
-                        category_id: 1,
-                    },
-                    {
-                        id:2,
-                        title: 'News 2',
-                        content: 'This is a wider card with supporting text below as a naturallead-in to ' +
-                            'additional content. This content is a little bit longer',
-                        short_content: 'His short content is a little bit longer',
-
-                        published_data: '2019-4-29',
-                        status: 'active', // or block
-                        image: 'https://www.askideas.com/media/36/Back-Picture-Of-Taj-Mahal-At-Sunset-Across-Yamuna-River.jpg',
-                        user_id: 1,
-                        category_id: 1,
-                    },
-                    {
-                        id:3,
-                        title: 'News 3',
-                        content: 'This is a wider card with supporting text below as a naturallead-in to ' +
-                            'additional content. This content is a little bit longer',
-                        short_content: 'His short content is a little bit longer',
-                        published_data: '2019-4-29',
-                        status: 'active', // or block
-                        image: 'https://www.setaswall.com/wp-content/uploads/2017/12/Cherry-Blossom-Tree-Wallpaper-25-1024x768.jpg',
-                        user_id: 1,
-                        category_id: 1,
-                    },
-
-                ],*/
             }
         },
         components:{
             appNews:News
         },
         computed:{
-            userLocal(){
-                return JSON.parse(localStorage.getItem('user'))
-            },
-            user(){
-                return this.$store.state.user
+            newsData(){
+                return this.$store.getters.news
             },
         },
         created() {
-            axios.get('http://127.0.0.1:8000/api/news').then(response => {
+            axios.get('http://127.0.0.1:8000/api/newses').then(response => {
                 this.page = response.data.meta.current_page
                 this.last_page = response.data.meta.last_page
-                this.newsData = response.data.data
+                this.$store.commit('news',response.data.data)
             })
         },
         methods:{
             next(){
                 if(this.page < this.last_page){
                     this.page++,
-                        axios.get('http://127.0.0.1:8000/api/news?page='+this.page).then(response => {
-                            console.log(response.data.data);
+                        axios.get('http://127.0.0.1:8000/api/newses?page='+this.page).then(response => {
                             this.newsData = response.data.data
                         })
                 }
@@ -104,19 +59,17 @@
             previus(){
                 if(this.page > 1){
                     this.page--,
-                        axios.get('http://127.0.0.1:8000/api/news?page='+this.page).then(response => {
-                            console.log(response.data.data);
+                        axios.get('http://127.0.0.1:8000/api/newses?page='+this.page).then(response => {
                             this.newsData = response.data.data
                         })
                 }
             },
             thisPage(page){
-                axios.get('http://127.0.0.1:8000/api/news?page='+ page).then(response => {
-                    console.log(response.data.data);
+                axios.get('http://127.0.0.1:8000/api/newses?page='+ page).then(response => {
                     this.newsData = response.data.data
                 })
             }
-        }
+        },
 
     }
 </script>

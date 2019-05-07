@@ -5,7 +5,7 @@
             <img class="card-img-top" src="http://www.elsetge.cat/imagepost/b/0/2025_free-wallpaper-images.jpg" alt="Card image cap">
             <div class="card-body bg-info">
                 <p class="card-text font-weight-bold">{{news.title}}</p>
-                <p class="card-text font-weight-bold"> {{news.content.substring(0,300)+".." }}</p>
+                <p class="card-text font-weight-bold"> {{news.content.substring(0,100)+".." }}</p>
                 <p class="card-text font-weight-bold">{{news.content.substring(0,100)+".." }}</p>
                 <div class="d-flex justify-content-between align-items-center ">
                     <div class="btn-group">
