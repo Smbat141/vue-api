@@ -98,9 +98,9 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
-                            <div class="custom-file">
-                                <input type="file"  id="image" ref="image" @change="imageUpload">
-                            </div>
+                            <input type="file" class="custom-file-input"
+                                   aria-describedby="inputGroupFileAddon01" @change="imageUpload" id="image">
+                            <label class="custom-file-label" for="image">Choose file</label>
                         </div>
                     </div>
                 </div>
