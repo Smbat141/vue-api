@@ -13,15 +13,17 @@ new Vue({
     store,
     render: h => h(App),
     router,
-    created() {
+    created (){
         let user = localStorage.getItem('user');
         if (user) this.$store.commit('auth', JSON.parse(user));
         axios.get('http://127.0.0.1:8000/api/newses').then(response => {
-            /*this.page = response.data.meta.current_page
-            this.last_page = response.data.meta.last_page
-            this.$store.commit('news',response.data.data)*/
-            this.$store.commit('news',response.data)
-
+            if(response.status == 200){
+                this.$store.commit('INITNEWS', response.data);
+            }
         })
+    },
+    mounted() {
+
     }
+
 }).$mount('#app');

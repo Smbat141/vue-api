@@ -4,12 +4,12 @@
             <div class="album py-5 bg-light" >
                 <div class="container">
                     <div class="row" >
-                        <app-news v-for="n in newsData" :news="n" :key="n.id"></app-news>
+                        <app-news v-for="n in news" :news="n" :key="n.id"></app-news>
                     </div>
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
                             <li class="page-item" ><button class="page-link" @click="previus">Previous</button></li>
-                            <li class="page-item" v-for="pages in lastPage" @click="thisPage(pages)"><button class="page-link" >{{pages}}</button></li>
+                            <li class="page-item" v-for="pages in lastPage" :key="pages" @click="thisPage(pages)"><button class="page-link" >{{pages}}</button></li>
                             <li class="page-item" ><button class="page-link" @click="next">Next</button></li>
                         </ul>
                     </nav>
@@ -29,9 +29,9 @@
         name: "Main",
         data(){
             return {
-                newsData:this.$store.getters.getNews.news,
-                page:this.$store.getters.getNews.page,
-                lastPage:this.$store.getters.getNews.lastPage,
+                newsData:[],
+                page:'',
+                lastPage:'',
             }
         },
         components:{
@@ -46,7 +46,6 @@
                     })
                 }
             },
-
             previus(){
                 if(this.page > 1){
                     this.page--;
@@ -57,12 +56,25 @@
             },
             thisPage(page){
                 axios.get('http://127.0.0.1:8000/api/newses?page='+ page).then(response => {
-                    console.log(response.data.meta.current_page);
                     this.page = response.data.meta.current_page
                    this.newsData = response.data.data
                 })
             }
         },
+        created() {
+            axios.get('http://127.0.0.1:8000/api/newses').then(response => {
+                if(response.status === 200){
+                    this.page = response.data.meta.current_page;
+                    this.lastPage = response.data.meta.last_page;
+                    this.$store.commit('INITNEWS', response.data.data);
+                }
+            });
+        },
+        computed: {
+            news() {
+                return this.$store.state.news;
+            }
+        }
 
     }
 </script>

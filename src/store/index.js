@@ -11,7 +11,7 @@ export default new Vuex.Store({
         news:[],
     },
     mutations:{
-        news(state,news){
+        INITNEWS(state, news){
             state.news = news
         },
         auth(state, user){
@@ -26,27 +26,9 @@ export default new Vuex.Store({
         token(state){
             return 'Bearer ' +  state.auth.user.api_token
         },
-        getNews(state){
-            console.log(state.news.meta.last_page);
 
-            return  {
-                news:state.news.data,
-                page:state.news.meta.current_page,
-                lastPage:state.news.meta.last_page
-            }
-        },
-
-        newsWhere:state => id =>{
-            // console.log(state.news);
-
-            state.news.filter(n => {
-                if(n.id === id){
-                    return state.news
-                }
-            })
-
-            return state.news
+        newsById:state => id =>{
+            state.news.find(item => item.id === id);
         }
-    }
-
+    },
 })

@@ -1,7 +1,7 @@
 <template>
     <div class="container">
 
-        <form class="form-horizontal" role="form" @submit.prevent>
+        <form class="form-horizontal" role="form" @submit.prevent enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
@@ -78,7 +78,7 @@
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <select class="custom-select" name="category" id="category" v-model="credentials.category_id">
                                 <option disabled value="">Categories</option>
-                                <option v-for="cat in categories" :value="cat.id">{{cat.name}}</option>
+                                <option v-for="cat in categories" :value="cat.id" :key="cat.id">{{cat.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -99,16 +99,15 @@
                     <div class="form-group">
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="image" ref="image" @change="imageUpload">
-                                <label class="custom-file-label" for="image">Choose file</label>
+                                <input type="file"  id="image" ref="image" @change="imageUpload">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-control-feedback">
-                        <span class="text-danger align-middle" v-show="errors.has('confirm_password')">
-                            <i class="fas fa-window-close" > {{errors.first('confirm_password')}}</i>
+                        <span class="text-danger align-middle" v-show="errors.has('image')">
+                            <i class="fas fa-window-close" > {{errors.first('image')}}</i>
                         </span>
                     </div>
                 </div>
@@ -139,11 +138,11 @@
                     title:'',
                     content:'',
                     short_content:'',
-                    image:'',
                     user_id:0,
                     category_id:'',
                 },
                 categories:[],
+                formData: new FormData()
             }
         },
         computed:{
@@ -151,21 +150,24 @@
         },
         methods:{
             addNews(){
+                for (let key in this.credentials)
+                    this.formData.append(key, this.credentials[key]);
 
-                let fd = new FormData();
-                fd.append('image',this.credentials.image,this.credentials.image.name)
+                // Object.keys(this.credentials).forEach(key => {
+                //     this.formData.append(key, this.credentials[key]);
+                // });
 
-                axios.post('http://127.0.0.1:8000/api/news',this.credentials,
-                    { 'headers': { 'Authorization': this.$store.getters.token}})
-                    .then(response => {
-                    if (response.status === 200) {
-                        console.log(response);
-                    }
+                axios.post('http://127.0.0.1:8000/api/news',this.formData, {
+                    'headers': {'Authorization': this.$store.getters.token}
+                }).then(response => {
+                     if (response.status === 200) {
+                         console.log(123);
+                     }
                 });
+                this.$router.push('myNews')
             },
-            imageUpload(){
-                this.credentials.image = this.$refs.image.files[0];
-                console.log(this.credentials.image.name);
+            imageUpload(event){
+                this.formData.append('image', event.target.files[0]);
             }
         },
         created(){
@@ -175,7 +177,6 @@
                 }
             });
             this.credentials.user_id = this.$store.state.auth.user.id;
-            console.log(this.credentials.user_id);
         }
     }
 </script>

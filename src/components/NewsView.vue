@@ -8,16 +8,32 @@
                 <p class="card-text"><small class="text-dark">{{news.published_data}}</small></p>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
+    import axios from "axios";
+
     export default {
         name: "NewsView",
-        computed:{
-            news(){
-                return  this.$store.getters.newsWhere(this.$route.params.id)
+        data() {
+            return {
+                news: {},
+            }
+        },
+        methods: {
+            getItem() {
+                return axios
+                    .get('http://127.0.0.1:8000/api/newses/' + this.$route.params.id)
+                    .then(response => response.data.data);
+            }
+        },
+        watch: {
+            '$store.state.news': function (news) {
+                if (news.length)
+                    this.news = this.$store.getters.newsById(this.$route.params.id);
+                else
+                    this.getItem().then(news => this.news = news);
             },
         },
 
